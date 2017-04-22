@@ -1,0 +1,52 @@
+default-lease-time 600;
+max-lease-time 7200;
+ddns-updates on;
+ddns-update-style interim;
+update-static-leases on;
+authoritative;
+log-facility local7;
+
+ failover peer "olimpus-failover" {
+    primary;                     #define servidor como primário
+    address 192.168.10.2;        #endereço do servidor local
+    port 647;                    #porta do servidor local
+    peer address 192.168.10.3;   #endereço do servidor parceiro
+    peer port 647;               #porta do servidor parceiro
+    max-response-delay 30;
+    max-unacked-updates 10;
+    load balance max seconds 3;
+    mclt 1800;
+    split 128;
+}
+
+key "rndc-key" {
+	algorithm hmac-md5;
+	secret "uBg00SJj6LlxsTgGeaScTQ==";
+};
+
+zone olimpus.xyz {
+    primary 192.168.10.2;
+    key "rndc-key";
+}
+
+zone 10.168.192.in-addr.arpa {
+    primary 192.168.10.2;
+    key "rndc-key";
+}
+
+subnet 192.168.10.0 netmask 255.255.255.0 {
+  option domain-name-servers 192.168.10.2, 192.168.10.3;
+  option domain-name "olimpus.xyz";
+  option routers 192.168.10.1;
+  option broadcast-address 192.168.10.255;
+  option ntp-servers 192.168.10.2;
+    pool {
+    failover peer "olimpus-failover";
+    range 192.168.10.10 192.168.10.50;
+    }
+}
+
+host hades {
+  hardware ethernet 08:00:27:e1:16:ac;
+  fixed-address 192.168.10.4;
+}

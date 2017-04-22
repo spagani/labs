@@ -1,0 +1,7 @@
+Nome        IP               Tipo         Função         SO                
+router  -> 192.168.10.1     roteador    firewall,nat    VyOS
+zeus    -> 192.168.10.2     servidor    dhcp,dns        Fedora 25
+hera    -> 192.168.10.3     servidor    dhcp,dns        Fedora 25
+hades   -> 192.168.10.4     servidor    file server     OpenmediaVault
+apolo   -> dhcp             cliente01                   Debian 8        
+ares    -> dhcp             cliente02                   Windows 7

@@ -1,0 +1,45 @@
+// named.rfc1912.zones:
+
+zone "localhost.localdomain" IN {
+	type master;
+	file "named.localhost";
+	allow-update { none; };
+};
+
+zone "localhost" IN {
+	type master;
+	file "named.localhost";
+	allow-update { none; };
+};
+
+zone "1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa" IN {
+	type master;
+	file "named.loopback";
+	allow-update { none; };
+};
+
+zone "1.0.0.127.in-addr.arpa" IN {
+	type master;
+	file "named.loopback";
+	allow-update { none; };
+};
+
+zone "0.in-addr.arpa" IN {
+	type master;
+	file "named.empty";
+	allow-update { none; };
+};
+
+zone "olimpus.xyz" {
+		type slave;
+		file "slaves/olimpus.xyz.zone";
+        masters { 192.168.10.2; };
+		notify yes;
+};
+
+zone "10.168.192.in-addr.arpa" {
+		type slave;
+		file "slaves/10.168.192.zone";
+        masters { 192.168.10.2; };
+		notify yes;
+};

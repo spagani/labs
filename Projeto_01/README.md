@@ -1,0 +1,1 @@
+Integração dos serviços de DHCP e DNS em modo failover.

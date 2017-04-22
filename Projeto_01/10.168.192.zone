@@ -1,0 +1,17 @@
+$ORIGIN 10.168.192.in-addr.arpa.
+$TTL 3600
+@   IN     SOA    zeus.olimpus.xyz. root.olimpus.xyz. (
+                2017041501  ; Serial
+                3H          ; refresh after 3 hours
+                1H          ; retry after 1 hour
+                1W          ; expire after 1 week
+                1D )        ; minimum TTL of 1 day
+
+    ; Name Server
+@   IN  NS  zeus.olimpus.xyz.   ; DHCP, DNS Server
+@   IN  NS  hera.olimpus.xyz.   ; DHCP, DNS Server
+
+    ; Servers
+2   IN  PTR zeus.olimpus.xyz.
+3   IN  PTR hera.olimpus.xyz.
+1   IN  PTR router.olimpus.xyz.
