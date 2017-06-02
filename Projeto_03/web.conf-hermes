@@ -1,0 +1,12 @@
+# /etc/httpd/conf.d/web.conf
+
+<VirtualHost *:80>
+    ServerName hermes.olimpus.xyz
+    ServerAlias olimpus.xyz
+    DocumentRoot /var/www/html
+    ErrorLog "/var/log/httpd/hermes-error_log"
+    # Habilita o envio, através do comando logger, da facilidade
+    # local6 e prioridade notice para o rsyslog.
+    # Por padrão o Apache não loga os acessos no syslog.
+    CustomLog "|/bin/logger -t apache  -i -p local6.notice" combined
+</VirtualHost>

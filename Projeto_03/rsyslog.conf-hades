@@ -1,0 +1,56 @@
+# /etc/rsyslog.conf
+
+# Para mais informações /usr/share/doc/rsyslog-*/rsyslog_conf.html
+# Se você tiver problemas, veja http://www.rsyslog.com/doc/troubleshoot.html
+
+#### MODULES ####
+
+# O módulo imjournal abaixo é usado agora como uma fonte de mensagem em vez de imuxsock.
+module(load="imuxsock" SysSock.FlowControl="on") # fornece suporte para registro local do sistema (e.g. via comando logger)
+module(load="imjournal" PersistStateInterval="100" StateFile="imjournal.state") # fornece acesso ao systemd journal
+$ModLoad imklog # lê as mensagens do kernel (as mesmas são lidas de journald)
+
+# Fornece recepção UDP ao syslog
+module(load="imudp")
+input(type="imudp" port="514")
+
+# Fornece recepção TCP ao syslog
+module(load="imtcp")
+input(type="imtcp" port="514")
+
+#### GLOBAL DIRECTIVES ####
+
+# Onde colocar arquivos auxiliares
+$WorkDirectory /var/lib/rsyslog
+
+# Use o formato de timestapp padrão
+$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
+
+# O recurso de sincronização de arquivos está desativado por padrão. Esse recurso geralmente não é necessário,
+# não é útil e tem um impacto no desempenho
+#$ActionFileEnableSync on
+
+# Inclua todos os arquivos de configuração em /etc/rsyslog.d/
+$IncludeConfig /etc/rsyslog.d/*.conf
+
+# Desligue a recepção de mensagens de log através do log socket;
+# As mensagens locais são recuperadas através do imjournal agora.
+$OmitLocalLogging on
+
+# Arquivo para armazenar a posição no journal
+$RepeatedMsgReduction on
+
+#### RULES ####
+
+*.info;mail.none;authpriv.none;cron.none                /var/log/messages
+authpriv.*                                              /var/log/secure
+mail.*                                                  -/var/log/maillog
+cron.*                                                  /var/log/cron
+*.emerg                                                 :omusrmsg:*
+uucp,news.crit                                          /var/log/spooler
+local7.*                                                /var/log/boot.log
+
+# Configuração do Log Remoto
+template(name="DynFile" type="string" string="/var/log/%HOSTNAME%/%PROGRAMNAME%.log")
+
+local4.*,local6.notice   ?DynFile

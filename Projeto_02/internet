@@ -1,0 +1,8 @@
+# Processo para criação da internet
+
+1. Instalação do VyOS em VMs com 512 MB de RAM e 2 GB de HD.
+2. Configuração das interfaces de rede
+3. Configuração do NAT para as redes 198.51.100.0/24, 192.0.2.0/24, 192.168.10.0/24, 203.0.113.0/24 e 172.16.16.0/24 em R1
+4. Configuração do roteamento com RIP nos três roteadores
+5. Configuração do DHCP-SERVER em R2 e R3
+5. Configuração da rota static default em R2 e R3.

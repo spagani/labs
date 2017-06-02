@@ -1,0 +1,11 @@
+Nomes       IP              Função      SO
+R1                          Router      VyOS
+R2                          Router      VyOS
+R3                          Router      VyOS
+Zeus        172.16.16.10    Vpn-Server  Centos 7
+Hades       192.168.10.10   Vpn-Server  Centos 7
+Apolo       192.168.20.5    File-Server OpenMediaVault
+Ares        dhcp            cliente     Debian 8
+Atena       dhcp            cliente     Windows 7
+Afrodite    dhcp            cliente     Debian 8
+Hermes      dhcp            cliente     Windows 7

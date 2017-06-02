@@ -1,0 +1,17 @@
+# Comandos para configurar R3
+
+set interfaces ethernet eth0 address '198.51.100.2/24'
+set interfaces ethernet eth1 address '203.0.113.1/24'
+set interfaces ethernet eth2 address '172.16.16.1/24'
+set interfaces loopback lo address '3.3.3.3/24'
+set protocols rip network '198.51.100.0/24'
+set protocols rip network '203.0.113.0/24'
+set protocols rip network '172.16.16.0/24'
+set protocols rip redistribute 'connected'
+set protocols static route 0.0.0.0/0 next-hop 198.51.100.1 distance '1'
+set service dhcp-server disabled 'false'
+set service dhcp-server shared-network-name LAN authoritative 'disable'
+set service dhcp-server shared-network-name LAN subnet 172.16.16.0/24 default-router '172.16.16.1'
+set service dhcp-server shared-network-name LAN subnet 172.16.16.0/24 dns-server '192.168.1.1'
+set service dhcp-server shared-network-name LAN subnet 172.16.16.0/24 lease '86400'
+set service dhcp-server shared-network-name LAN subnet 172.16.16.0/24 start 172.16.16.10 stop '172.16.16.20'

@@ -1,0 +1,70 @@
+   Static hostname: zeus
+         Icon name: computer-vm
+           Chassis: vm
+        Machine ID: 512bcbd7352848d8a0073c85a112144a
+           Boot ID: 3e51e5b3dc9d4849904b960714a50e02
+    Virtualization: kvm
+  Operating System: CentOS Linux 7 (Core)
+       CPE OS Name: cpe:/o:centos:centos:7
+            Kernel: Linux 3.10.0-514.16.1.el7.x86_64
+      Architecture: x86-64
+
+# Instalação de pacotes
+yum install dhcp openvpn easy-rsa epel-release
+
+# Configuração da interface de rede externa
+TYPE="Ethernet"
+BOOTPROTO="dhcp"
+DEFROUTE="yes"
+PEERDNS="yes"
+PEERROUTES="yes"
+IPV4_FAILURE_FATAL="no"
+NAME="enp0s3"
+UUID="5afe7c67-56f1-48a5-8312-c604253a46cc"
+DEVICE="enp0s3"
+ONBOOT="yes"
+ZONE="external"
+
+# Configuração da interface de rede interna
+TYPE="Ethernet"
+BOOTPROTO="none"
+DEFROUTE="yes"
+PEERROUTES="yes"
+IPV4_FAILURE_FATAL="no"
+NAME="enp0s8"
+UUID="84428830-a60a-4833-a315-772543700d24"
+DEVICE="enp0s8"
+ONBOOT="yes"
+IPADDR="192.168.20.1"
+PREFIX="24"
+ZONE="internal"
+
+# Configuração do arquivo /etc/dhcp/dhcpd.conf
+ddns-update-style none;
+authoritative;
+log-facility local7;
+
+subnet 192.168.20.0 netmask 255.255.255.0 {
+  range 192.168.20.10 192.168.20.30;
+  option domain-name-servers 8.8.8.8, 8.8.4.4;
+  option domain-name "sp.olimpus.xyz";
+  option routers 192.168.20.1;
+  option broadcast-address 192.168.20.254;
+  default-lease-time 600;
+  max-lease-time 7200;
+  interface enp0s8; 
+}
+
+host apolo {
+  hardware ethernet 08:00:27:88:9a:60;
+  fixed-address 192.168.20.5;
+}
+
+# Habilitar o foward no kernel:
+sysctl -w "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+
+# Habilitar e liberar no firewall o serviço de DHCP
+systemctl enable dhcpd
+systemctl start dhcpd
+firewall-cmd --add-service=dhcp --zone=internal --permanent
+

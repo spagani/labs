@@ -1,0 +1,18 @@
+# /etc/dhcp/dhcpd.conf
+
+ddns-update-style none;
+authoritative;
+
+# facilidade usada para o envio de mensagens ao servidor remoto
+log-facility local4; 
+
+subnet 192.0.2.0 netmask 255.255.255.0 {
+  range 192.0.2.15 192.0.2.50;
+  option domain-name-servers 8.8.8.8, 8.8.4.4;
+  option domain-name "olimpus.xyz";
+  option routers 192.0.2.1;
+  option broadcast-address 192.0.2.255;
+  default-lease-time 600;
+  max-lease-time 7200;
+  interface enp0s3;
+}
